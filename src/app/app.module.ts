@@ -5,8 +5,11 @@ import { FileComponent } from './file/file.component';
 import { ControlPanelComponent } from './control-panel/control-panel.component';
 import { HeaderComponent } from './header/header.component';
 import { FormsModule } from '@angular/forms';
-import { TextService } from './text-service/text.service';
+import { TextService } from './services/text/text.service';
 import { FooterComponent } from './footer/footer.component';
+import { BoldFormatterComponent } from './control-panel/control-formatters/bold-formatter/bold-formatter.component';
+import { ItalicFormatterComponent } from './control-panel/control-formatters/italic-formatter/italic-formatter.component';
+import { UnderlineFormatterComponent } from './control-panel/control-formatters/underline-formatter/underline-formatter.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +17,10 @@ import { FooterComponent } from './footer/footer.component';
     FileComponent,
     ControlPanelComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    BoldFormatterComponent,
+    ItalicFormatterComponent,
+    UnderlineFormatterComponent
   ],
   imports: [
     BrowserModule,
