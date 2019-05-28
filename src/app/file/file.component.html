@@ -2,8 +2,6 @@
      contenteditable="true"
      class="file"
      (dblclick)="getSynonyms($event)"
-     (document:click)="deselected()"
-     (document:selectionchange)="deselected()"
      (blur)="deselected()"
      (keypress)="deselected()">
   {{text$ | async}}
