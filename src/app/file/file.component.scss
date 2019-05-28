@@ -13,3 +13,17 @@
   border: 1px solid #e4dede;
   padding: 20px;
 }
+
+.synonyms {
+  position: absolute;
+  width: 250px;
+  z-index: 101;
+  background-color: rgba(0, 0, 0, .8);
+  color: white;
+  padding: 2px;
+
+  a {
+    color: white;
+    text-decoration: none;
+  }
+}

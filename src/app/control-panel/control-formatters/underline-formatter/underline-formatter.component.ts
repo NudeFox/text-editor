@@ -1,4 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { FormatterService } from '../../../services/formatter/formatter.service';
+import { FormattersInterface } from '../../formatters.interface';
 
 @Component({
   selector: 'app-underline-formatter',
@@ -6,11 +9,40 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   styleUrls: ['./underline-formatter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UnderlineFormatterComponent implements OnInit {
+export class UnderlineFormatterComponent implements AfterViewInit, FormattersInterface, OnDestroy {
 
-  constructor() { }
+  isApplied = false;
+  subscription: Subscription;
 
-  ngOnInit() {
+  constructor(
+    private formatterService: FormatterService,
+    private ref: ChangeDetectorRef
+  ) { }
+
+  ngAfterViewInit() {
+    this.subscription = this.formatterService.formatterDeselect.subscribe(
+      () => {
+        this.checkApplied();
+        this.ref.detectChanges();
+      }
+    );
+  }
+
+  applyFormatter(): void {
+    document.execCommand('underline');
+  }
+
+  checkApplied(): void {
+    this.isApplied = document.queryCommandState('underline');
+  }
+
+  formatText(): void {
+    this.applyFormatter();
+    this.checkApplied();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 }

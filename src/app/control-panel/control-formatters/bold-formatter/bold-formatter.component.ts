@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, AfterViewInit, OnDestroy, Renderer2 } from '@angular/core';
+import { Component, ChangeDetectionStrategy, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormattersInterface } from '../../formatters.interface';
 import { FormatterService } from '../../../services/formatter/formatter.service';
 import { Subscription } from 'rxjs';
@@ -11,54 +11,33 @@ import { Subscription } from 'rxjs';
 })
 export class BoldFormatterComponent implements AfterViewInit, FormattersInterface, OnDestroy {
   isApplied = false;
-  selection: Selection;
   subscription: Subscription;
 
   constructor(
     private formatterService: FormatterService,
-    private renderer: Renderer2
+    private ref: ChangeDetectorRef
   ) { }
 
   ngAfterViewInit() {
-    this.subscription = this.formatterService.formatterTrigger.subscribe(
-      (selection: Selection) => {
-        this.selection = selection;
+    this.subscription = this.formatterService.formatterDeselect.subscribe(
+      () => {
+        this.checkApplied();
+        this.ref.detectChanges();
       }
     );
   }
 
   applyFormatter(): void {
-    this.isApplied = true;
-    const selectedRange = this.selection.getRangeAt(0);
-    const selectedText = selectedRange.extractContents();
-    const updatedNode = this.renderer.createElement('b');
-    this.renderer.appendChild(updatedNode, selectedText);
-    selectedRange.insertNode(updatedNode);
+    document.execCommand('bold');
   }
 
-  removeFormatter(): void {
-    this.isApplied = false;
-    const range = this.selection.getRangeAt(0).cloneRange();
-    let node = range.startContainer;
-    while (node.nodeType !== 1) {
-      node = node.parentNode;
-    }
-    console.dir(node);
-    const textNode = this.renderer.createText(node.textContent);
-    node.remove();
-    range.insertNode(textNode);
+  checkApplied(): void {
+    this.isApplied = document.queryCommandState('bold');
   }
 
   formatText(): void {
-    if (this.selection !== undefined) {
-      // check if the selection node is wrapped in bold tag
-      const range = this.selection.getRangeAt(0).cloneRange();
-      let node = range.startContainer;
-      while (node.nodeType !== 1) {
-        node = node.parentNode;
-      }
-      node.nodeName === 'B' ? this.removeFormatter() : this.applyFormatter();
-    }
+    this.applyFormatter();
+    this.checkApplied();
   }
 
   ngOnDestroy(): void {

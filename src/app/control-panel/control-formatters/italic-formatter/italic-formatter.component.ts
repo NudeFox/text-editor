@@ -1,4 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { FormatterService } from '../../../services/formatter/formatter.service';
+import { FormattersInterface } from '../../formatters.interface';
 
 @Component({
   selector: 'app-italic-formatter',
@@ -6,11 +9,40 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   styleUrls: ['./italic-formatter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ItalicFormatterComponent implements OnInit {
+export class ItalicFormatterComponent implements AfterViewInit, FormattersInterface, OnDestroy {
 
-  constructor() { }
+  isApplied = false;
+  subscription: Subscription;
 
-  ngOnInit() {
+  constructor(
+    private formatterService: FormatterService,
+    private ref: ChangeDetectorRef
+  ) { }
+
+  ngAfterViewInit() {
+    this.subscription = this.formatterService.formatterDeselect.subscribe(
+      () => {
+        this.checkApplied();
+        this.ref.detectChanges();
+      }
+    );
+  }
+
+  applyFormatter(): void {
+    document.execCommand('italic');
+  }
+
+  checkApplied(): void {
+    this.isApplied = document.queryCommandState('italic');
+  }
+
+  formatText(): void {
+    this.applyFormatter();
+    this.checkApplied();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 }

@@ -1,3 +1,20 @@
-<div id="editor" class="file" (dblclick)="getSelectedText()">
+<div id="editor"
+     contenteditable="true"
+     class="file"
+     (dblclick)="getSynonyms($event)"
+     (document:click)="deselected()"
+     (document:selectionchange)="deselected()"
+     (blur)="deselected()"
+     (keypress)="deselected()">
   {{text$ | async}}
+</div>
+
+<div class="synonyms" *ngIf="showPopup"
+     [style.left]="leftPosition"
+     [style.top]="topPosition">
+  <a href="#"
+     *ngFor="let synonym of synonyms; let last = last"
+     (click)="changeSelected(synonym)">
+    {{last ? synonym : synonym + ', '}}
+  </a>
 </div>

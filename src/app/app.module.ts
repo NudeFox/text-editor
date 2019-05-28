@@ -10,6 +10,7 @@ import { FooterComponent } from './footer/footer.component';
 import { BoldFormatterComponent } from './control-panel/control-formatters/bold-formatter/bold-formatter.component';
 import { ItalicFormatterComponent } from './control-panel/control-formatters/italic-formatter/italic-formatter.component';
 import { UnderlineFormatterComponent } from './control-panel/control-formatters/underline-formatter/underline-formatter.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { UnderlineFormatterComponent } from './control-panel/control-formatters/
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [
     TextService

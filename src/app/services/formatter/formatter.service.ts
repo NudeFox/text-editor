@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class FormatterService {
-  formatterTrigger = new Subject<Selection>();
+  formatterDeselect = new Subject<any>();
 
   constructor() { }
 }

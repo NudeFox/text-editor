@@ -1,7 +1,7 @@
 <button
   class="format-action btn btn-outline-secondary"
   type="button"
-  [ngClass]="{'active': isApplied && selection !== undefined}"
+  [class.active]="isApplied"
   (click)="formatText()">
   <b>B</b>
 </button>

@@ -1,5 +1,7 @@
 <button
   class="format-action btn btn-outline-secondary"
-  type="button">
+  type="button"
+  [class.active]="isApplied"
+  (click)="formatText()">
   <i>I</i>
 </button>
